@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill_vertical"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/appView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/menuTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:gravity="start"
+            android:paddingLeft="40dp"
+            android:paddingTop="15dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="15dp"
+            android:singleLine="true"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#C1F3F3F3"
+            android:textSize="28sp"
+            app:drawableStartCompat="@drawable/edit_24px" />
+
+        <ViewSwitcher
+            android:id="@+id/menuView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.1"
+            android:clipToPadding="false">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/appRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdgeLength="20dp"
+                android:padding="0dp"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/contactRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdgeLength="20dp"
+                android:padding="0dp"
+                android:requiresFadingEdge="vertical"
+                android:scrollbars="none">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </ViewSwitcher>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="0.1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/searchSwitcher"
+            app:layout_constraintStart_toStartOf="@+id/searchSwitcher">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:cursorVisible="true"
+                android:drawableStart="@drawable/search_24px"
+                android:drawablePadding="6dp"
+                android:editTextColor="#f3f3f3"
+                android:hint="@string/search"
+                android:singleLine="true"
+                android:textAlignment="viewStart"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColorHighlight="#5F33B5E5"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/internetSearch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <ImageView
+                android:id="@+id/internetSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/switch_to_contacts"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/searchView"
+                app:layout_constraintEnd_toStartOf="@+id/searchSwitcher"
+                app:layout_constraintTop_toTopOf="@+id/searchView"
+                app:srcCompat="@drawable/travel_explore_24"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <ImageView
+                android:id="@+id/searchSwitcher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/switch_to_contacts"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="@+id/searchView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/searchView"
+                app:srcCompat="@drawable/apps_24px"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:id="@+id/searchReplacement"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/homeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_vertical"
+        android:gravity="fill_vertical"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <!-- Horizontal clock and date layout -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clockLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
+            android:paddingHorizontal="24dp">
+
+            <TextClock
+                android:id="@+id/textClock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:format12Hour="hh:mm"
+                android:format24Hour="HH:mm"
+                android:textAlignment="textStart"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:textSize="48sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/textDate" />
+
+            <TextClock
+                android:id="@+id/textDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format12Hour="dd MMM yyyy"
+                android:format24Hour="dd MMM yyyy"
+                android:lineSpacingExtra="6sp"
+                android:textAlignment="textStart"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:textSize="16sp"
+                android:gravity="start"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textClock"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Space
+            android:id="@+id/topSpace"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.15" />
+
+        <!-- 3-column grid layout for apps -->
+        <GridLayout
+            android:id="@+id/appsGrid"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:columnCount="3"
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/app1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/app15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"
+                android:autoSizeTextType="uniform"
+                android:clickable="false"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:shadowColor="#00FFFFFF"
+                android:shadowRadius="8"
+                android:text="@string/shortcut_default"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+                android:textColor="#F3F3F3"
+                android:visibility="gone" />
+
+        </GridLayout>
+
+        <Space
+            android:id="@+id/bottomSpace"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2" />
+
+    </LinearLayout>
+
+</FrameLayout>
