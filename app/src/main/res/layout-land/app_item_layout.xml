@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:id="@+id/renameView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingVertical="8dp"
+        android:visibility="invisible">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/appNameEdit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="#A7000000"
+            android:clickable="true"
+            android:elegantTextHeight="false"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:includeFontPadding="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="0dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="0dp"
+            android:selectAllOnFocus="true"
+            android:shadowColor="#00FFFFFF"
+            android:shadowRadius="10"
+            android:singleLine="true"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#FFF3F3F3"
+            android:textColorHighlight="#5F33B5E5"
+            android:textSize="24sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/reset"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:background="#C3000000"
+            android:gravity="center"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/reset"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#F3F3F3" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:clickable="false"
+        android:drawablePadding="3dp"
+        android:gravity="start|center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:shadowColor="#00FFFFFF"
+        android:shadowRadius="10"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+        android:textColor="#F3F3F3"
+        android:textSize="24sp"
+        android:visibility="visible" />
+
+    <GridLayout
+        android:id="@+id/actionMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:rowCount="2"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/pin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/pin"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/keep_24px" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/info"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/info_24px" />
+
+        <TextView
+            android:id="@+id/uninstall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/uninstall"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/delete_24px" />
+
+        <TextView
+            android:id="@+id/rename"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/rename"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/edit_24px" />
+
+        <TextView
+            android:id="@+id/hide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/hide"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/visibility_off_24px" />
+
+        <TextView
+            android:id="@+id/close"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_action_background"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:singleLine="true"
+            android:text="@string/close"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="#E3F3F3F3"
+            android:textSize="12sp"
+            app:drawableTopCompat="@drawable/close_24px" />
+
+    </GridLayout>
+
+</FrameLayout>
