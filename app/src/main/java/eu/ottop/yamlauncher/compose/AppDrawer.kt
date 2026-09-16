@@ -72,7 +72,6 @@ fun AppDrawer(vm: LauncherViewModel) {
     val open by vm.drawerOpen.collectAsState()
     if (!open) return
     val p by vm.uiPrefs.collectAsState()
-    val context = LocalContext.current
 
     BackHandler { vm.closeDrawer() }
 
@@ -151,30 +150,6 @@ fun AppDrawer(vm: LauncherViewModel) {
             },
             dismissButton = {
                 TextButton(onClick = vm::dismissConfirm) {
-                    Text(stringResource(R.string.confirm_no))
-                }
-            },
-        )
-    }
-
-    // Screen-lock accessibility prompt.
-    val showAccessPrompt by vm.accessibilityPrompt.collectAsState()
-    if (showAccessPrompt) {
-        AlertDialog(
-            onDismissRequest = vm::dismissAccessibilityPrompt,
-            title = { Text(stringResource(R.string.confirm_title)) },
-            text = { Text(stringResource(R.string.screenlock_confirmation)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    vm.dismissAccessibilityPrompt()
-                    context.startActivity(
-                        android.content.Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                            .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-                    )
-                }) { Text(stringResource(R.string.confirm_yes)) }
-            },
-            dismissButton = {
-                TextButton(onClick = vm::dismissAccessibilityPrompt) {
                     Text(stringResource(R.string.confirm_no))
                 }
             },
