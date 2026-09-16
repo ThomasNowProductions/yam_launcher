@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -205,6 +206,7 @@ private fun AppList(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
         reverseLayout = false,
     ) {
         items(filtered, key = { it.key }) { model ->
@@ -447,7 +449,11 @@ private fun ContactList(
     val contacts by vm.contacts.collectAsState()
     val pickSlot: Int? = vm.shortcutPickSlot.collectAsState().value
     val style = launcherTextStyle(p, p.appSizeSp.sp, alignmentFor(p.appAlign))
-    LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+    ) {
         items(contacts, key = { it.second }) { (name, id) ->
             Row(
                 modifier = Modifier
