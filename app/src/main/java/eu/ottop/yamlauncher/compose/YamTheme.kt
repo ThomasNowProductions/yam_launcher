@@ -48,7 +48,17 @@ fun shortcutSize(preset: String?): Float = SHORTCUT_SIZES[sizeIndex(preset)]
 
 // ---- fonts ----
 
-fun fontFamilyFor(fontKey: String?): FontFamily = when (fontKey) {
+// FontFamily instances are cached: building one from a bundled font resource
+// parses font data, so recreating it on every launcherTextStyle() call (once
+// per alphabet letter, search field, row, ...) stalls composition and scroll.
+private val fontFamilyCache = java.util.concurrent.ConcurrentHashMap<String, FontFamily>()
+
+fun fontFamilyFor(fontKey: String?): FontFamily {
+    val key = fontKey ?: "system"
+    return fontFamilyCache.getOrPut(key) { uncachedFontFamilyFor(key) }
+}
+
+private fun uncachedFontFamilyFor(fontKey: String): FontFamily = when (fontKey) {
     "monospace" -> FontFamily.Monospace
     "serif" -> FontFamily.Serif
     "cursive" -> FontFamily.Cursive

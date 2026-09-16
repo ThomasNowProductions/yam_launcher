@@ -81,14 +81,20 @@ fun AppDrawer(vm: LauncherViewModel) {
 
     // Swipe-down-to-close: consume downward overscroll only when the visible
     // list is already at its top, so normal list scrolling is unaffected.
+    // The accumulator is a plain var inside the connection: writing Compose
+    // snapshot state on every scroll callback would cost a snapshot write per
+    // touch-move and stall scrolling.
     val appListState = rememberLazyListState()
     val contactListState = rememberLazyListState()
-    val tabForScroll by vm.drawerTab.collectAsState()
-    var overscrollAccum by remember { mutableStateOf(0f) }
     val closeConnection = remember(p.swipeThreshold) {
         object : NestedScrollConnection {
+            var overscrollAccum = 0f
+
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val atTop = if (tabForScroll == 0) {
+                // Read the flow value directly: this callback is not a
+                // composition, so collecting it as state would both
+                // over-subscribe and capture a stale tab in this remember.
+                val atTop = if (vm.drawerTab.value == 0) {
                     appListState.firstVisibleItemIndex == 0 &&
                         appListState.firstVisibleItemScrollOffset == 0
                 } else {
@@ -209,7 +215,11 @@ private fun AppList(
         verticalArrangement = Arrangement.Bottom,
         reverseLayout = false,
     ) {
-        items(filtered, key = { it.key }) { model ->
+        items(
+            filtered,
+            key = { it.key },
+            contentType = { if (it.key == renameKey) "rename" else "app" },
+        ) { model ->
             val renameEntry = if (model.key == renameKey) vm.entryOf(model.key) else null
             if (renameEntry != null) {
                 RenameRow(vm, renameEntry, model.name)
@@ -259,6 +269,16 @@ private fun AlphabetIndex(vm: LauncherViewModel) {
     if (available.isEmpty()) return
     var selected by remember { mutableStateOf<String?>(null) }
     val letters = remember { listOf("#") + ('A'..'Z').map { it.toString() } }
+    // Built once per prefs change: 27 rows share them instead of each row
+    // rebuilding the text style (and font lookup) on every recomposition.
+    val indexStyle = remember(p) {
+        launcherTextStyle(p, 12.sp, androidx.compose.ui.text.style.TextAlign.Center)
+    }
+    val indexStyleDimmed = remember(p) {
+        launcherTextStyle(p, 12.sp, androidx.compose.ui.text.style.TextAlign.Center).copy(
+            color = Color(p.textColor).copy(alpha = 0.25f),
+        )
+    }
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = if (p.alphabetPosition == "left") Alignment.CenterStart else Alignment.CenterEnd,
@@ -297,17 +317,7 @@ private fun AlphabetIndex(vm: LauncherViewModel) {
                 Text(
                     text = letter,
                     modifier = Modifier.weight(1f),
-                    style = launcherTextStyle(
-                        p,
-                        12.sp,
-                        androidx.compose.ui.text.style.TextAlign.Center,
-                    ).copy(
-                        color = when {
-                            isSelected -> Color(p.textColor)
-                            isAvailable -> Color(p.textColor)
-                            else -> Color(p.textColor).copy(alpha = 0.25f)
-                        },
-                    ),
+                    style = if (isSelected || isAvailable) indexStyle else indexStyleDimmed,
                     maxLines = 1,
                 )
             }
@@ -448,13 +458,14 @@ private fun ContactList(
     val context = LocalContext.current
     val contacts by vm.contacts.collectAsState()
     val pickSlot: Int? = vm.shortcutPickSlot.collectAsState().value
-    val style = launcherTextStyle(p, p.appSizeSp.sp, alignmentFor(p.appAlign))
+    // Cached like the app list: building the style loads the font family.
+    val style = remember(p) { launcherTextStyle(p, p.appSizeSp.sp, alignmentFor(p.appAlign)) }
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
     ) {
-        items(contacts, key = { it.second }) { (name, id) ->
+        items(contacts, key = { it.second }, contentType = { "contact" }) { (name, id) ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -551,6 +562,14 @@ private fun ColumnScope.SearchBar(vm: LauncherViewModel) {
 
     val showLayout = p.searchEnabled || p.contactsEnabled
     if (!showLayout) return
+    // Cached: the search bar recomposes on every keystroke, and building the
+    // style performs a font-family lookup each time.
+    val searchStyle = remember(p) { launcherTextStyle(p, p.searchSizeSp.sp, alignmentFor(p.searchAlign)) }
+    val searchHintStyle = remember(p) {
+        launcherTextStyle(p, p.searchSizeSp.sp, alignmentFor(p.searchAlign)).copy(
+            color = Color(p.textColor).copy(alpha = 0.66f),
+        )
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -571,7 +590,7 @@ private fun ColumnScope.SearchBar(vm: LauncherViewModel) {
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(focusRequester),
-                textStyle = launcherTextStyle(p, p.searchSizeSp.sp, alignmentFor(p.searchAlign)),
+                textStyle = searchStyle,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 cursorBrush = SolidColor(Color(p.textColor)),
@@ -580,8 +599,7 @@ private fun ColumnScope.SearchBar(vm: LauncherViewModel) {
                         if (query.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.search),
-                                style = launcherTextStyle(p, p.searchSizeSp.sp, alignmentFor(p.searchAlign))
-                                    .copy(color = Color(p.textColor).copy(alpha = 0.66f)),
+                                style = searchHintStyle,
                             )
                         }
                         inner()
